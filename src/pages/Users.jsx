@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 
 function Users() {
+  const [users, setUsers] = useState([]);
   const [idusers, setIdusers] = useState("");
   const [users_name, setUsers_name] = useState("");
 
@@ -26,6 +27,17 @@ function Users() {
         }
       });
   };
+
+  const handleRead = () => {
+    axios.get("http://127.0.0.1:8000/api/users/read").then((res) => {
+      console.log(res.data);
+      setUsers(!res.data.status ? res.data : []);
+    });
+  };
+
+  useEffect(() => {
+    handleRead();
+  }, []);
 
   return (
     <Container>
@@ -62,7 +74,14 @@ function Users() {
               <th>USERNAME</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {users.map((user, index) => (
+              <tr key={index}>
+                <td>{user.idusers}</td>
+                <td>{user.users_name}</td>
+              </tr>
+            ))}
+          </tbody>
         </Table>
       </div>
     </Container>
