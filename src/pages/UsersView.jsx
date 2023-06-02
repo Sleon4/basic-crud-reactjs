@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function UsersView() {
+  const navigate = useNavigate();
   const { idusers } = useParams();
 
   const [idusers_e, setIdusers_e] = useState("");
@@ -18,6 +19,22 @@ function UsersView() {
         setUsers_name_e(res.data.users_name);
       }
     });
+  };
+
+  const handleUpdate = () => {
+    const form = {
+      users_name: users_name_e,
+    };
+
+    axios
+      .put("http://127.0.0.1:8000/api/users/update/" + idusers, form)
+      .then((res) => {
+        console.log(res.data);
+
+        if (res.data.status === "success") {
+          navigate("/users");
+        }
+      });
   };
 
   useEffect(() => {
@@ -59,7 +76,7 @@ function UsersView() {
               </Form.Group>
 
               <div className="d-grid gap-2">
-                <Button type="button" variant="warning">
+                <Button type="button" variant="warning" onClick={handleUpdate}>
                   {"Update"}
                 </Button>
 
