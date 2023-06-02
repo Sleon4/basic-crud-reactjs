@@ -25,6 +25,7 @@ function Users() {
         console.log(res.data);
 
         if (res.data.status === "success") {
+          handleRead();
           setUsers_name("");
         }
       });

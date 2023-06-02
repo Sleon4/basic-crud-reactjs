@@ -37,6 +37,18 @@ function UsersView() {
       });
   };
 
+  const handleDelete = () => {
+    axios
+      .delete("http://127.0.0.1:8000/api/users/delete/" + idusers)
+      .then((res) => {
+        console.log(res.data);
+
+        if (res.data.status === "success") {
+          navigate("/users");
+        }
+      });
+  };
+
   useEffect(() => {
     handleReadUser();
   }, []);
@@ -80,7 +92,7 @@ function UsersView() {
                   {"Update"}
                 </Button>
 
-                <Button type="button" variant="danger">
+                <Button type="button" variant="danger" onClick={handleDelete}>
                   {"Delete"}
                 </Button>
               </div>
